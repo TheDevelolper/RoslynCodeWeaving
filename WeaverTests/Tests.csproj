@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Samples\TestController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Samples\TestController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.15.2" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeGen.Common\CodeGen.Common.csproj" />
+    <ProjectReference Include="..\CodeGen.Schema.Reader.Json\CodeGen.Schema.Reader.Json.csproj" />
+    <ProjectReference Include="..\CodeGen.Weaver\CodeGen.Weaver.csproj" />
+    <ProjectReference Include="..\harness\CodeGen.csproj" />
+  </ItemGroup>
+
+</Project>

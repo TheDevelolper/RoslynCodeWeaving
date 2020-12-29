@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 
-namespace MyGenerator
+namespace library
 {
     [Generator]
     public class MyTestGenerator : ISourceGenerator
@@ -19,7 +19,7 @@ namespace MyGenerator
             var contents = CreateClass();
 
             File.WriteAllText(Path.Combine(workingDirectory, "Controllers" ,"TestContoller.cs"),contents);
-            context.AddSource("HelloWoooorldGenerator", SourceText.From(contents, Encoding.UTF8));
+            context.AddSource("HelloWorldGenerator", SourceText.From(contents, Encoding.UTF8));
 
         }
 
@@ -65,7 +65,7 @@ namespace MyGenerator
                         SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName("ControllerBase")));
 
 
-            var syntax = SyntaxFactory.ParseStatement("return Content(\"Hello World!!\");");
+            var syntax = SyntaxFactory.ParseStatement("return Content(\"Hello Gaj!!!!\");");
 
             // Create a method
             var methodDeclaration = SyntaxFactory.MethodDeclaration(SyntaxFactory.ParseTypeName("IActionResult"), "Get")
@@ -91,8 +91,6 @@ namespace MyGenerator
             // Output new code to the console.
             return code;
         }
-
-
 
     }
 }
