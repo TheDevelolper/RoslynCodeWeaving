@@ -15,11 +15,11 @@ namespace Tests
     {
         public Schema Schema { get; set; }
 
-        private static readonly Regex whitespaceRegex = new Regex(@"\s+");
+        private static readonly Regex WhitespaceRegex = new Regex(@"\s+");
 
         public static string ReplaceWhitespace(string input, string replacement)
         {
-            return whitespaceRegex.Replace(input, replacement);
+            return WhitespaceRegex.Replace(input, replacement);
         }
 
 

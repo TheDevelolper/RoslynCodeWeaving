@@ -7,7 +7,7 @@ namespace WebHarness
     [ApiController, Route("Sample")]
     public class TestController : ControllerBase
     {
-        public string SomeString
+        public System.String SomeString
         {
             get;
             set;

@@ -47,7 +47,7 @@ namespace Tests
         public void CanReadProperties() => Assert.IsNotEmpty(Sut.Read().Solutions.First().Projects.First().Classes.First().Properties);
 
         [Test]
-        public void CanGetPropertyType() => Assert.AreEqual(typeof(int).ToString(), Sut.Read().Solutions.First().Projects.First().Classes.First().Properties.First().TypeName);
+        public void CanGetPropertyType() => Assert.AreEqual(typeof(string).ToString(), Sut.Read().Solutions.First().Projects.First().Classes.First().Properties.First().TypeName);
 
         [Test]
         public void CanReadMethods()

@@ -7,7 +7,7 @@ namespace CodeGen.Weaver
 {
     public class RoslynAttributesBuilder
     {
-        private SyntaxList<AttributeSyntax> attributeList = new SyntaxList<AttributeSyntax>();
+        private SyntaxList<AttributeSyntax> _attributeList = new SyntaxList<AttributeSyntax>();
 
         public RoslynAttributesBuilder AddAttribute(string name, ICollection<string> arguments = null)
         {
@@ -25,7 +25,7 @@ namespace CodeGen.Weaver
                     SyntaxFactory.IdentifierName(name));
             }
 
-            attributeList = attributeList.Add(attribute);
+            _attributeList = _attributeList.Add(attribute);
 
             return this;
         }
@@ -46,6 +46,6 @@ namespace CodeGen.Weaver
         }
 
         public AttributeListSyntax BuildAttributes() =>
-            SyntaxFactory.AttributeList(SyntaxFactory.SeparatedList(attributeList));
+            SyntaxFactory.AttributeList(SyntaxFactory.SeparatedList(_attributeList));
     }
 }

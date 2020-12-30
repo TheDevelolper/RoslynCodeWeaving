@@ -135,14 +135,14 @@ namespace CodeGen.Weaver
             var methodDeclaration = SyntaxFactory.MethodDeclaration(SyntaxFactory.ParseTypeName(returns), name)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
 
-            var MethodStatements = new List<StatementSyntax>();
+            var methodStatements = new List<StatementSyntax>();
             if (string.IsNullOrWhiteSpace(code) == false)
             {
-                MethodStatements.Add(SyntaxFactory.ParseStatement(code));
+                methodStatements.Add(SyntaxFactory.ParseStatement(code));
             }
 
             methodDeclaration = methodDeclaration.WithBody(SyntaxFactory.Block(
-                MethodStatements
+                methodStatements
             ));
 
             if (attributes?.ChildNodes()?.Count() > 0)

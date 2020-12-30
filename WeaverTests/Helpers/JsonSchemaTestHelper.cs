@@ -54,7 +54,7 @@ namespace Tests.Helpers
                                                 new()
                                                 {
                                                     Name = "SomeString", 
-                                                    TypeName = "string", 
+                                                    TypeName = "System.String", 
                                                     InitialValue = "HelloWorld",
                                                     Accessors = SchemaPropertyAccessors.Get | SchemaPropertyAccessors.Set,
                                                 },
