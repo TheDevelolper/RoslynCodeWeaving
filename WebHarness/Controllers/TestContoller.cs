@@ -13,6 +13,7 @@ namespace WebHarness
             set;
         }
 
+            = "SomeString";
         [HttpGet]
         public string SomeMethod()
         {

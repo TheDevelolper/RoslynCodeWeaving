@@ -11,8 +11,9 @@ namespace WebHarness
         {
             get;
             set;
-        } = "Rosa";
-
+        }
+            
+        = "SomeString";
         [HttpGet]
         public string SomeMethod()
         {

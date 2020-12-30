@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using CodeGen.Common.Contracts;
 using CodeGen.Common.Models;
 using CodeGen.Schema.Reader.Json;
@@ -13,6 +14,14 @@ namespace Tests
     public sealed class RoslynClassWriterTests: BaseTestClass<IClassWriter>
     {
         public Schema Schema { get; set; }
+
+        private static readonly Regex whitespaceRegex = new Regex(@"\s+");
+
+        public static string ReplaceWhitespace(string input, string replacement)
+        {
+            return whitespaceRegex.Replace(input, replacement);
+        }
+
 
         public override void Setup()
         {
@@ -32,10 +41,14 @@ namespace Tests
                     Solutions.
                     First().Projects.First().Classes.First());
 
+            expectedOutput = ReplaceWhitespace(expectedOutput, string.Empty);
+            actualOutput = ReplaceWhitespace(actualOutput, string.Empty);
+
             Assert.AreEqual(expectedOutput, actualOutput);
         }
 
     }
 
 }
+
 
