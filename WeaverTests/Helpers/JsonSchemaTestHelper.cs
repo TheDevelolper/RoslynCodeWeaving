@@ -51,7 +51,13 @@ namespace Tests.Helpers
                                         Properties =
                                             new List<SchemaProperty>()
                                             {
-                                                new() {Name = "SomeString", TypeName = "string", InitialValue = "HelloWorld"},
+                                                new()
+                                                {
+                                                    Name = "SomeString", 
+                                                    TypeName = "string", 
+                                                    InitialValue = "HelloWorld",
+                                                    Accessors = SchemaPropertyAccessors.Get | SchemaPropertyAccessors.Set,
+                                                },
                                             },
                                         Methods = new List<SchemaMethod>()
                                         {

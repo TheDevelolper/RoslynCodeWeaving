@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Reflection.Metadata;
 using CodeGen.Common.Contracts;
 using CodeGen.Common.Models;
 using Microsoft.CodeAnalysis;
@@ -66,6 +67,7 @@ namespace CodeGen.Weaver
                         schemaProperty.Name,
                         schemaProperty.TypeName,
                         "SomeString",
+                        schemaProperty.Accessors,
                         attributesBuilder.BuildAttributes()
                     );
                 }
@@ -123,8 +125,8 @@ namespace CodeGen.Weaver
 
     public class RoslynClassBuilder
     {
-        public  List<MethodDeclarationSyntax> Methods = new List<MethodDeclarationSyntax>();
-        public  List<PropertyDeclarationSyntax> Properties = new List<PropertyDeclarationSyntax>();
+        public List<MethodDeclarationSyntax> Methods = new List<MethodDeclarationSyntax>();
+        public List<PropertyDeclarationSyntax> Properties = new List<PropertyDeclarationSyntax>();
         public AttributeListSyntax Attributes { get; set; }
         public string Extends { get; set; }
         public string Name { get; set; }
@@ -153,7 +155,7 @@ namespace CodeGen.Weaver
                 @namespace = @namespace.AddUsings(
                     SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(@using)))
                 );
-            
+
             var classDeclaration =
                 SyntaxFactory.ClassDeclaration(Name)
                     .AddModifiers(
@@ -163,8 +165,8 @@ namespace CodeGen.Weaver
 
             Properties.ForEach(property => classDeclaration = classDeclaration.AddMembers(property));
             Methods.ForEach(method => classDeclaration = classDeclaration.AddMembers(method));
-            
-            classDeclaration = 
+
+            classDeclaration =
                 classDeclaration.AddAttributeLists(Attributes);
 
             // Add the class to the namespace.
@@ -175,14 +177,33 @@ namespace CodeGen.Weaver
                 .ToFullString();
         }
 
-        public RoslynClassBuilder AddProperty(string name, string typeName, object initialValue, AttributeListSyntax attributes)
+        public RoslynClassBuilder AddProperty(string name, string typeName, object initialValue, SchemaPropertyAccessors accessors, AttributeListSyntax attributes)
         {
             var propertyDeclaration = SyntaxFactory.PropertyDeclaration(SyntaxFactory.ParseTypeName(typeName), name)
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
 
-                .AddAccessorListAccessors(
-                SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)),
-                SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)));
+            var accessorList = new List<AccessorDeclarationSyntax>();
+
+            if (accessors.HasFlag(SchemaPropertyAccessors.Get))
+            {
+                accessorList.Add(
+                SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                    .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken))
+                );
+            }
+
+            if (accessors.HasFlag(SchemaPropertyAccessors.Set))
+            {
+                accessorList.Add(
+                    SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
+                        .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken))
+                );
+            }
+
+            propertyDeclaration = propertyDeclaration
+            .AddAccessorListAccessors(
+                accessorList.ToArray()
+            );
 
 
             if (attributes?.ChildNodes()?.Count() > 0)
@@ -205,7 +226,7 @@ namespace CodeGen.Weaver
             {
                 MethodStatements.Add(SyntaxFactory.ParseStatement(code));
             }
-            
+
             methodDeclaration = methodDeclaration.WithBody(SyntaxFactory.Block(
                 MethodStatements
             ));

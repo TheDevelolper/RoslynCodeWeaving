@@ -8,5 +8,6 @@ namespace CodeGen.Common.Models
         public string TypeName { get; set; }
         public object InitialValue { get; set; }
         public ICollection<SchemaAttribute> Attributes { get; set; } = new List<SchemaAttribute>();
+        public SchemaPropertyAccessors Accessors { get; set; } 
     }
 }
